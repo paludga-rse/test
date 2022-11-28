@@ -14,7 +14,7 @@ fi;
 
 git reset --hard
 git clean -fd
-git pull origin master
+git pull origin main
 
 echo "Exec Node app"
 # tail -f /dev/null
