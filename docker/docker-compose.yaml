@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  test-deploy:
+    image: test:dev
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile.backend
+    container_name: "test-deploy"
+    hostname: "test-deploy"
+    env_file:
+      - .env
