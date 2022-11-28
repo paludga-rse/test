@@ -1,20 +1,27 @@
 FROM node:alpine
 
-# Create app directory
-WORKDIR /usr/src/app
-RUN chmod -R 777 /usr/src/app
+ENV ROOT_PATH=/usr/src
+ENV APP_PATH=$ROOT_PATH/app
+ENV NODE_PATH=$ROOT_PATH/node_modules
 
+WORKDIR $ROOT_PATH
 # install git
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 
+
 # Install app dependencies
 COPY ./package.json .
-RUN npm install
+RUN npm install --prefix $ROOT_PATH
+
+# Create app directory
+WORKDIR /usr/src/app
+RUN chmod -R 777 /usr/src/app
 
 WORKDIR /home/node
 COPY ./docker/entrypoint.sh .
+RUN chmod +x /home/node/entrypoint.sh
 
 EXPOSE 8080
 # CMD tail -f /dev/null
-CMD ./entrypoint.sh /usr/src/app
+CMD ./entrypoint.sh $APP_PATH
